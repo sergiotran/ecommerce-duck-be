@@ -1,15 +1,27 @@
+import { User } from './user/entities/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
-import { CartModule } from './cart/cart.module';
-import { PhotoModule } from './photo/photo.module';
 
 @Module({
-  imports: [UserModule, CategoryModule, ProductModule, CartModule, PhotoModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      port: parseInt(process.env.DATABASE_PORT) || 3306,
+      database: process.env.DATABASE_NAME || 'my_blog',
+      username: process.env.DATABASE_USERNAME || 'admin',
+      password: process.env.DATABASE_PASSWORD || '1561',
+      host: process.env.DATABASE_HOST || 'localhost',
+      autoLoadEntities: true,
+      synchronize: !(process.env.NODE_ENV === 'production'),
+    }),
+    UserModule,
+    ProductModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

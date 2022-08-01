@@ -1,11 +1,5 @@
-import { Photo } from './../../photo/entities/photo.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { User } from './../../user/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'products',
@@ -15,21 +9,39 @@ export class Product {
   id: string;
 
   @Column({
-    type: String,
     nullable: false,
   })
   name: string;
 
   @Column({
-    type: Number,
+    nullable: false,
+    unique: true,
+  })
+  slug: string;
+
+  @Column({
+    default: true,
+  })
+  out_of_stock: boolean;
+
+  @Column({
+    default: true,
+  })
+  enabled: boolean;
+
+  @Column({
     nullable: false,
   })
-  quantity: number;
+  price: number;
+
+  @Column({
+    default: '#',
+  })
+  featured_image: string;
 
   @Column()
-  @OneToOne(() => Photo)
-  @JoinColumn()
-  thumbnail: Photo;
+  description: string;
 
-  @Column:
+  @ManyToOne(() => User, (user) => user.products)
+  user: User;
 }

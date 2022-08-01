@@ -1,5 +1,6 @@
 import { Product } from './../../product/entities/product.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRole } from '../../common/constants/user.constant';
 
 @Entity({
   name: 'users',
@@ -27,6 +28,11 @@ export class User {
   phone_number: string;
 
   @Column({
+    nullable: false,
+  })
+  date_of_birth: string;
+
+  @Column({
     type: String,
     unique: true,
     nullable: false,
@@ -35,16 +41,21 @@ export class User {
 
   @Column({
     type: String,
+    select: false,
   })
   password: string;
 
   @Column({
     type: String,
-    nullable: true,
+    default: '#',
   })
   profile_image: string;
 
-  @Column()
+  @Column({
+    default: UserRole.NORMAL,
+  })
+  role: UserRole;
+
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
 }
