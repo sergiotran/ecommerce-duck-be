@@ -1,6 +1,6 @@
+import { Role } from './../../common/constants/enums/role.enum';
 import { Product } from './../../product/entities/product.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRole } from '../../common/constants/user.constant';
 
 @Entity({
   name: 'users',
@@ -52,9 +52,9 @@ export class User {
   profile_image: string;
 
   @Column({
-    default: UserRole.NORMAL,
+    default: Role.USER,
   })
-  role: UserRole;
+  role: string;
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];

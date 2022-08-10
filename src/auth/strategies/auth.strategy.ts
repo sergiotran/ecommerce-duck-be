@@ -8,6 +8,7 @@ export class AuthStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       usernameField: 'email',
+      passwordField: 'password',
     });
   }
 

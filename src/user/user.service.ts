@@ -13,7 +13,6 @@ export type UserQuery = keyof User;
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly model: Repository<User>,
-    private readonly dataSource: DataSource,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -74,8 +73,6 @@ export class UserService {
           })
           .addSelect('user.password')
           .getOne();
-
-        console.log(user);
       }
 
       return user;
