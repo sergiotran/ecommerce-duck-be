@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
@@ -19,6 +20,7 @@ import { ProductModule } from './product/product.module';
       autoLoadEntities: true,
       synchronize: !(process.env.NODE_ENV === 'production'),
     }),
+    AuthModule,
     UserModule,
     ProductModule,
   ],

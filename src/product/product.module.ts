@@ -1,4 +1,3 @@
-import { UserModule } from './../user/user.module';
 import { Product } from './entities/product.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';

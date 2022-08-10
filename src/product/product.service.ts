@@ -55,8 +55,20 @@ export class ProductService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    try {
+      const product = await this.productModel
+        .createQueryBuilder('product')
+        .leftJoinAndSelect('product.user', 'user')
+        .where('product.id = :id', {
+          id,
+        })
+        .getOne();
+
+      return product;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
