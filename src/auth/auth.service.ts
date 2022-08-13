@@ -1,7 +1,7 @@
 import { Reflector } from '@nestjs/core';
 import { User } from './../user/entities/user.entity';
 import { UserService } from './../user/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, HttpStatus } from '@nestjs/common';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.userService.findOne(null, 'email', email);
+    const { data: user } = await this.userService.findOne('email', email);
 
     if (user) {
       const { password: userPassword, ...userObj } = user;
@@ -27,8 +27,22 @@ export class AuthService {
     return null;
   }
 
+  async verifyToken(token: string) {
+    try {
+      await this.jwtService.verify(token);
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+      };
+    }
+  }
+
   async login(user: User) {
     return {
+      statusCode: HttpStatus.OK,
       access_token: this.jwtService.sign(user),
     };
   }

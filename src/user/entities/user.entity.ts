@@ -24,6 +24,7 @@ export class User {
   @Column({
     type: String,
     nullable: false,
+    unique: true,
   })
   phone_number: string;
 
@@ -55,6 +56,12 @@ export class User {
     default: Role.USER,
   })
   role: string;
+
+  @Column({
+    default: '84',
+    nullable: false,
+  })
+  country_code: string;
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
